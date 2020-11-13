@@ -113,7 +113,7 @@ def scrape():
         "news_paragraph": paragraph_elem,
         "featured_image_url":featured_url,
         "facts":fact_table,
-        "hemisphere_images":hems_dict
+        "hemisphere_images":hem_dict
     }
 
     browser.quit()
