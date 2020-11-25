@@ -65,13 +65,13 @@ def mars_facts(browser):
 
     #Make it into a pandas column
     fact_table = table[0]
-    fact_table.columns = ["Category", "Unit"]
+    fact_table.columns = ["Fact", "Value"]
 
     #Convert it back to HTML
     fact_html = fact_table.to_html()
     fact_html.replace('\n','')
 
-    return fact_table
+    return fact_html
 
 def hems_imgs(browser):
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
