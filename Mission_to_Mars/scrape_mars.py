@@ -119,7 +119,6 @@ def scrape():
     browser.quit()
     return data_dict
 
-print(scrape())
 
 
 
