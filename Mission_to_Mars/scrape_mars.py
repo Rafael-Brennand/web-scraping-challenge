@@ -5,6 +5,7 @@ from splinter import Browser
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+import json
 
 executable_path = {'executable_path': ChromeDriverManager().install()}
 browser = Browser('chrome', **executable_path, headless=False)
@@ -61,17 +62,16 @@ def mars_facts(browser):
     url = 'https://space-facts.com/mars/'
     browser.visit(url)
 
-    table = pd.read_html(url)
+    facts_table = pd.read_html(url)
 
     #Make it into a pandas column
-    fact_table = table[0]
-    fact_table.columns = ["Fact", "Value"]
+    df = facts_table[0]
+    df.columns = ["Fact", "Value"]
 
-    #Convert it back to HTML
-    fact_html = fact_table.to_html()
-    fact_html.replace('\n','')
+    result = df.to_json(orient="split")
+    mars_df = json.loads(result)
 
-    return fact_html
+    return mars_df
 
 def hems_imgs(browser):
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
@@ -105,19 +105,21 @@ def hems_imgs(browser):
 def scrape():
     title_elem, paragraph_elem = mars_news(browser)
     featured_url = mars_feat(browser)
-    fact_table = mars_facts(browser)
+    table = mars_facts(browser)
     hem_dict = hems_imgs(browser)
 
     data_dict = {
         "news_title":title_elem,
         "news_paragraph": paragraph_elem,
         "featured_image_url":featured_url,
-        "facts":fact_table,
+        "facts":table,
         "hemisphere_images":hem_dict
     }
 
     browser.quit()
     return data_dict
+
+
 
 
 
